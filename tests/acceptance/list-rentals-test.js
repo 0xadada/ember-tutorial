@@ -3,14 +3,6 @@ import moduleForAcceptance from 'super-rentals/tests/helpers/module-for-acceptan
 
 moduleForAcceptance('Acceptance | list rentals');
 
-test('visiting /', function(assert) {
-  visit('/');
-
-  andThen(function() {
-    assert.equal(currentURL(), '/');
-  });
-});
-
 test('should redirect to rentals route', (assert) => {
   visit('/');
   andThen(function() {
@@ -23,9 +15,9 @@ test('should redirect to rentals route', (assert) => {
 test('should list available rentals', function (assert) {
   visit('/');
   andThen(function() {
-    assertEqual(find('.listing').length,
+    assert.equal(find('.listing').length,
                 3,
-                'should see 3 listings');
+                'should display 3 listings');
   });
 });
 
