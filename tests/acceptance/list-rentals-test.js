@@ -10,74 +10,58 @@ let StubMapsService = Ember.Service.extend({
 
 moduleForAcceptance('Acceptance | list rentals', {
   beforeEach() {
-    this.application.register('service:stubMaps', StubMapsService);
-    this.application.inject('component:location-map', 'maps', 'service:stubMaps');
+    this.application.register('service:mockMaps', StubMapsService);
+    this.application.inject('component:location-map', 'maps', 'service:mockMaps');
   }
 });
 
-test('should redirect to rentals route', (assert) => {
+test('should redirect to rentals route', function (assert) {
   visit('/');
   andThen(function() {
-    assert.equal(currentURL(),
-                 '/rentals',
-                 'should redirect automatically');
+    assert.equal(currentURL(), '/rentals', 'should redirect automatically');
   });
 });
 
-test('should list available rentals', function (assert) {
-  visit('/');
-  andThen(function() {
-    assert.equal(find('.listing').length,
-                3,
-                'should display 3 listings');
-  });
-});
 
-test('should link to information about the company', function (assert) {
+test('should link to about page', function (assert) {
   visit('/');
   click('a:contains("About")');
-  andThen(function() {
-    assert.equal(currentURL(),
-                 '/about',
-                 'should navigate to about');
+  andThen(function () {
+    assert.equal(currentURL(), '/about', 'should navigate to about');
   });
 });
 
-test('should link to contact information', function(assert) {
+test('should link to contacts page', function (assert) {
   visit('/');
   click('a:contains("Contact")');
-  andThen(function(){
-    assert.equal(currentURL(),
-                 '/contact',
-                 'should navigate to about');
+  andThen(function () {
+    assert.equal(currentURL(), '/contact', 'should navigate to contact');
   });
 });
 
-test('should filter the list of rentals by city', function(assert) {
+test('should initially list 3 rentals', function (assert) {
+  visit('/');
+  andThen(function () {
+    assert.equal(find('.results .listing').length, 3, 'should display 3 listings');
+  });
+});
+
+test('should list 1 rental when filtering by Seattle', function (assert) {
   visit('/');
   fillIn('.list-filter input', 'seattle');
-  andThen(() => {
-    assert.equal(find('.listing').length,
-                 1,
-                 'should show 1 listing item');
-    assert.equal(find('.listing .location:contains("Seattle")').length,
-                 1,
-                 'should contain 1 list item with location Seattle');
+  keyEvent('.list-filter input', 'keyup', 69);
+  andThen(function () {
+    assert.equal(find('.results .listing').length, 1, 'should display 1 listing');
+    assert.equal(find('.listing .location:contains("Seattle")').length, 1, 'should contain 1 listing with location Seattle');
   });
 });
 
-test('should show details for a specific rental', function(assert) {
+test('should show details for a specific rental', function (assert) {
   visit('/rentals');
   click('a:contains("Grand Old Mansion")');
-  andThen(() => {
-    assert.equal(currentURL(),
-                 '/rentals/grand-old-mansion',
-                 'should navigate to show route');
-    assert.equal(find('.show-listing h2').text(),
-                 'Grand Old  Mansion',
-                 'should list rental title');
-    assert.equal(find('.description').length,
-                 1,
-                 'should list a description of the property');
+  andThen(function() {
+    assert.equal(currentURL(), '/rentals/grand-old-mansion', "should navigate to show route");
+    assert.equal(find('.show-listing h2').text(), "Grand Old Mansion", 'should list rental title');
+    assert.equal(find('.description').length, 1, 'should list a description of the property');
   });
 });

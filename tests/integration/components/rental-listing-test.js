@@ -6,9 +6,9 @@ moduleForComponent('rental-listing', 'Integration | Component | rental listing',
   integration: true
 });
 
-test('should toggle wide class on click', function (assert) {
+test('should toggle wide class on click', function(assert) {
   assert.expect(3);
-  let stubRental = Ember.object.create({
+  let stubRental = Ember.Object.create({
     image: 'fake.png',
     title: 'test-title',
     owner: 'test-owner',
@@ -22,5 +22,5 @@ test('should toggle wide class on click', function (assert) {
   this.$('.image').click();
   assert.equal(this.$('.image.wide').length, 1, 'rendered wide after click');
   this.$('.image').click();
-  assert.equal(this.$('.image.wide').length, 0, 'rendered small after click again');
+  assert.equal(this.$('.image.wide').length, 0, 'rendered small after second click');
 });
