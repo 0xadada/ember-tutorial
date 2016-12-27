@@ -1,4 +1,3 @@
-
 import { rentalPropertyType } from 'super-rentals/helpers/rental-property-type';
 import { module, test } from 'qunit';
 
